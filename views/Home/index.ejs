@@ -4,8 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./css/nav.css">
 </head>
 <body>
-    <h1>Wellcome To Home</h1>
+    <div class="nav-bar">
+        <nav>
+            <ol>
+                <li>Home</li>
+                <li>Blogs</li>
+                <li>Chats</li>
+                <li>About</li>
+                <li>
+                    <form action="/logout" method="post" class="logout">
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                    </form>
+                </li>
+            </ol>
+        </nav>
+    </div>
 </body>
 </html>

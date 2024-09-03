@@ -21,6 +21,9 @@ app.post('/login', (req,res)=>{
         res.render('./Auth/login.ejs')
     }
 })
+app.post('/logout', (req, res)=>{
+    res.render('./Auth/login.ejs')
+});
 
 app.use((req,res)=>{
     res.status(404).send('Page Not Found')
