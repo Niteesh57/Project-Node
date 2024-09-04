@@ -1,0 +1,51 @@
+/* Container for the cards */
+.body-cards {
+    display: flex;
+    flex-wrap: wrap; /* Allows cards to wrap to the next line */
+    justify-content: center; /* Center cards in the container */
+    gap: 20px; /* Space between cards */
+    padding: 20px; /* Padding around the container */
+    background-color: #f4f4f4; /* Light background for the section */
+}
+
+/* Styling each individual card */
+.card {
+    background-color: white; /* White background for the card */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    width: 300px; /* Fixed width for each card */
+    padding: 20px; /* Padding inside the card */
+    text-align: center; /* Center text inside the card */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Card content styling */
+.card h2 {
+    font-size: 22px; /* Larger title text */
+    margin-bottom: 10px; /* Space below the title */
+    color: #333; /* Dark color for the title */
+}
+
+.card p {
+    font-size: 16px; /* Standard size for paragraph text */
+    color: #666; /* Grey color for text */
+    margin-bottom: 10px; /* Space below paragraphs */
+}
+
+.card h4 {
+    font-size: 18px; /* Slightly larger text for h4 */
+    color: #444; /* Darker grey for h4 text */
+    margin-bottom: 8px; /* Space below h4 */
+}
+
+/* Rating style */
+.card p:last-of-type {
+    font-weight: bold; /* Bold for the rating */
+    color: #ff9800; /* Orange color for rating text */
+}
+
+/* Hover effect for the card */
+.card:hover {
+    transform: translateY(-5px); /* Slightly lift the card on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
