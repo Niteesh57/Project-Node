@@ -46,6 +46,6 @@
 
 /* Hover effect for the card */
 .card:hover {
-    transform: translateY(-5px); /* Slightly lift the card on hover */
+    transform: translateY(0px); /* Slightly lift the card on hover */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
 }

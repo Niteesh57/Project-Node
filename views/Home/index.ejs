@@ -24,18 +24,19 @@
         </nav>
     </div>
     <div class="body-cards">
-        <% data.forEach(s => { %>
+        <script>console.log(users);</script>
+        <% for( let s = 0; s < data.length; s++ ) { %>
             <div class="card">
-                <h2><%= s.title %></h2>
-                <p><%= s.description %></p>
-                <h4><%= s.brand %></h4>
-                <h4><%= s.category %></h4>
-                <h4>$<%= s.price %></h4>
-                <h4>Discount: <%= s.discountPercentage %>%</h4>
-                <p>Rating: <%= s.rating %> / 5</p>
-                <p>Stock: <%= s.stock %> units</p>
+                <h2><%= data[s]['title'] %></h2>
+                <p><%= data[s].description %></p>
+                <h4><%= data[s].brand %></h4>
+                <h4><%= data[s].category %></h4>
+                <h4>$<%= data[s].price %></h4>
+                <h4>Discount: <%= data[s].discountPercentage %>%</h4>
+                <p>Rating: <%= data[s].rating %> / 5</p>
+                <p>Stock: <%= data[s].stock %> units</p>
             </div>
-        <% }) %>
+        <% } %>
     </div>    
     </div>
 </body>

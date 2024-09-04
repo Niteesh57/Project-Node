@@ -17,38 +17,22 @@ app.get('/register', (req, res) => {
 });
 
 // Login route
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    
-    if (username === 'admin' && password === 'admin') {
-        fs.readFile('./views/data/data.json', 'utf8', (err, data) => {
-            if (err) {
-                console.error("Failed to read data.json:", err);
-                return res.status(500).send("Server Error: Unable to read data.");
-            } 
-            
-            let users;
-            try {
-                users = JSON.parse(data);
-                console.log("Type of users:", typeof users);
-                console.log("Is users an array?", Array.isArray(users));
-            } catch (e) {
-                console.error("Failed to parse JSON:", e);
-                return res.status(500).send("Server Error: Failed to parse data.");
+app.post('/login', (req,res)=>{
+    const {username, password} = req.body
+    if(username === 'admin' && password === 'admin'){
+        fs.readFile('./views/data/data.json', 'utf8',(err,data)=>{
+            if(err) console.log(err);
+            else{
+                parsedData = JSON.parse(data);
+                console.log(parsedData);
+                res.render('./Home/index.ejs', { data: parsedData.products })
             }
-            
-            // Ensure users is an array
-            if (Array.isArray(users)) {
-                res.render('./Home/index.ejs', { data: users });
-            } else {
-                res.status(500).send("Error: Data is not an array.");
-            }
-        });
-    } else {
-        // Incorrect username or password
-        res.render('./Auth/login.ejs', { error: "Invalid credentials" });
+        })
     }
-});
+    else{
+        res.render('./Auth/login.ejs')
+    }
+})
 
 // Logout route
 app.post('/logout', (req, res) => {
