@@ -1,10 +1,14 @@
 const exp = require('express');
 const fs = require('fs');
+const expressLayouts = require('express-ejs-layouts');
 const app = exp();
 
 app.set('view engine', 'ejs');
 app.use(exp.static('public'));
 app.use(exp.urlencoded({ extended: true }));
+
+app.use(expressLayouts);
+app.set('layout', './Layouts/unauth.layout.ejs');
 
 // Home route - login page
 app.get('/', (req, res) => {
@@ -25,7 +29,7 @@ app.post('/login', (req,res)=>{
             else{
                 parsedData = JSON.parse(data);
                 console.log(parsedData);
-                res.render('./Home/index.ejs', { data: parsedData.products })
+                res.render('./Home/index.ejs', { layout:'./Layouts/auth.layout.ejs', data: parsedData.products })
             }
         })
     }

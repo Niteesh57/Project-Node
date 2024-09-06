@@ -4,7 +4,7 @@
     flex-wrap: wrap; /* Allows cards to wrap to the next line */
     justify-content: center; /* Center cards in the container */
     gap: 20px; /* Space between cards */
-    padding: 20px; /* Padding around the container */
+    padding: 40px; /* Padding around the container */
     background-color: #f4f4f4; /* Light background for the section */
 }
 

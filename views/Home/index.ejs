@@ -1,28 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./css/nav.css">
-    <link rel="stylesheet" href="./css/body-cards.css">
-</head>
-<body>
-    <div class="nav-bar">
-        <nav>
-            <ol>
-                <li>Home</li>
-                <li>Blogs</li>
-                <li>Chats</li>
-                <li>About</li>
-                <li>
-                    <form action="/logout" method="post" class="logout">
-                        <button type="submit" class="btn btn-primary">Logout</button>
-                    </form>
-                </li>
-            </ol>
-        </nav>
-    </div>
+
     <div class="body-cards">
         <script>console.log(users);</script>
         <% for( let s = 0; s < data.length; s++ ) { %>
@@ -38,6 +14,4 @@
             </div>
         <% } %>
     </div>    
-    </div>
-</body>
-</html>
+
