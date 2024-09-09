@@ -27,6 +27,7 @@ app.post('/login', (req,res)=>{
         fs.readFile('./views/data/data.json', 'utf8',(err,data)=>{
             if(err) console.log(err);
             else{
+                const users = JSON.parse(data);
                 parsedData = JSON.parse(data);
                 console.log(parsedData);
                 res.render('./Home/index.ejs', { layout:'./Layouts/auth.layout.ejs', data: parsedData.products })
