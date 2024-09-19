@@ -30,6 +30,8 @@ app.post('/login', (req,res)=>{
                 const users = JSON.parse(data);
                 parsedData = JSON.parse(data);
                 console.log(parsedData);
+                console.log(parsedData);
+                
                 res.render('./Home/index.ejs', { layout:'./Layouts/auth.layout.ejs', data: parsedData.products })
             }
         })
