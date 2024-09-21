@@ -21,16 +21,14 @@ app.get('/register', (req, res) => {
 });
 
 // Login route
-app.post('/login', (req,res)=>{
-    const {username, password} = req.body
+app.post('/login', (req,res)=>{ 
+    const { username, password} = req.body
     if(username === 'admin' && password === 'admin'){
         fs.readFile('./views/data/data.json', 'utf8',(err,data)=>{
             if(err) console.log(err);
             else{
-                const users = JSON.parse(data);
+                const users: JSON = JSON.parse(data);
                 parsedData = JSON.parse(data);
-                console.log(parsedData);
-                console.log(parsedData);
                 
                 res.render('./Home/index.ejs', { layout:'./Layouts/auth.layout.ejs', data: parsedData.products })
             }
