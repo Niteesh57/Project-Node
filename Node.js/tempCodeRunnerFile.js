@@ -1,14 +1,10 @@
 const fs = require('fs');
-const {parse} = require('csv-parse');
+const csv = require('csv-parse');
 
 const result = []
 
-fs.createReadStream('./Node.js/data.csv')
-.pipe(parse({
-    comment: '#',
-    delimiter: ',',
-    columns: true,
-}))
+fs.createReadStream('data.csv')
+.pipe(parse())
 .on('data', function(row) {
     result.push(row)
     })
