@@ -3,6 +3,14 @@ const fs = require('fs');
 const expressLayouts = require('express-ejs-layouts');
 const app = exp();
 
+
+app.use(function s(req,res,next){
+    let dates = Date.now()
+    res.locals.title = "My App";
+    let t1 = Date.now() - dates
+    console.log(t1)
+    next();
+})
 app.set('view engine', 'ejs');
 app.use(exp.static('public'));
 app.use(exp.urlencoded({ extended: true }));
