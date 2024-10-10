@@ -1,7 +1,6 @@
 const exp = require('express');
-const fs = require('fs');
 const expressLayouts = require('express-ejs-layouts');
-const Login = require('./Controllers/signup');
+const AuthRouter = require('./Controllers/signup');
 const app = exp();
 
 
@@ -15,12 +14,10 @@ app.use(function s(req,res,next){
 app.set('view engine', 'ejs');
 app.use(exp.static('public'));
 app.use(exp.urlencoded({ extended: true }));
-
-app.use(Login);
 app.use(expressLayouts);
 app.set('layout', './Layouts/unauth.layout.ejs');
 
-
+app.use(AuthRouter);
 // Handle 404 errors
 app.use((req, res) => {
     res.status(404).send('Page Not Found');
