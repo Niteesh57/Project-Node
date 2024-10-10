@@ -48,7 +48,10 @@ AuthRouter.get('/register', (req, res) => {
 AuthRouter.post('/login', (req,res)=>{ 
     
     const { username, password} = req.body
-    if(username === 'admin' && password === 'admin'){
+    SignUpModel.findOne({name: username, password: password})
+    .then(user =>{
+        if (user)
+        {
         fs.readFile('C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Data/data.json', 'utf8',(err,data)=>{
             if(err) console.log(err);
             else{
@@ -56,10 +59,13 @@ AuthRouter.post('/login', (req,res)=>{
                 res.render('../views/Home/index.ejs', { layout:'../views/Layouts/auth.layout.ejs', data: parsedData.products })
             }
         })
-    }
-    else{
-        res.render('../views/Auth/login.ejs')
-    }
+        }
+        else{
+            res.render('../views/Auth/login.ejs');
+        }
+    }).catch(err =>{
+        res.render('../views/Auth/login.ejs');
+    });
 })
 
 // Logout route
