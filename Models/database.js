@@ -60,7 +60,7 @@ module.exports = { SignUpModel }
 // });
 
 // // Define the Product model
-// const Product = mongoose.model('Test', productSchema);
+const Product = mongoose.model('Test', productSchema);
 
 // app.get('/', (req,res)=>{
 //     Product.find().then(p =>{
