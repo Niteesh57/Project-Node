@@ -1,6 +1,7 @@
 const exp = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const AuthRouter = require('./Controllers/signup');
+const helmet = require('helmet');
 const app = exp();
 
 
@@ -12,6 +13,7 @@ app.use(function s(req,res,next){
     next();
 })
 app.set('view engine', 'ejs');
+app.use(helmet());
 app.use(exp.static('public'));
 app.use(exp.urlencoded({ extended: true }));
 app.use(expressLayouts);

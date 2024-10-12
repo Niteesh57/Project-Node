@@ -15,6 +15,7 @@
     "express": "^4.19.2",
     "express-ejs-layouts": "^2.5.1",
     "fs": "^0.0.1-security",
+    "helmet": "^8.0.0",
     "mongoose": "^8.7.0",
     "nodemon": "^3.1.7",
     "tcs": "^10.0.2"
