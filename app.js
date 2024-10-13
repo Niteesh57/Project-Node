@@ -4,6 +4,7 @@ const AuthRouter = require('./Controllers/signup');
 const helmet = require('helmet');
 const app = exp();
 
+require('dotenv').config();
 
 app.use(function s(req,res,next){
     let dates = Date.now()
