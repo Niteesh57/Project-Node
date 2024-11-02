@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="./css/blogs.css">
+<div class="container mt-5">
+    <form enctype="multipart/form-data" method="post" id="formWeb" class="p-4 border rounded bg-light" action="./submit" onsubmit="return validateForm()">
+        <div class="mb-3">
+            <label for="web_site_name" class="form-label">Web Site Name</label>
+            <input type="text" class="form-control" id="web_site_name" name="web_site_name" minlength="5" title="Web Site Name" value="<%= oldValues.web_site_name || '' %>" required>
+            <div class="form-text text-muted">Eg: Google, Flipkart, Zepto</div>
+            <span class="text-danger" id="nameError"><%= errors.web_site_name || '' %></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="web_site_category" class="form-label">Web Site Category</label>
+            <input type="text" class="form-control" id="web_site_category" name="web_site_category" minlength="5" title="Web Site Category" value="<%= oldValues.web_site_category || '' %>" required>
+            <div class="form-text text-muted">Eg: Clothes, Furniture, Shirts, T-Shirts</div>
+            <span class="text-danger" id="categoryError"><%= errors.web_site_category || '' %></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="web_site_descrption" class="form-label">Web Site Description</label>
+            <textarea class="form-control" rows="4" cols="50" id="web_site_description" name="web_site_description" minlength="5" title="Web Site Description" required><%= oldValues.web_site_description || '' %></textarea>
+            <div class="form-text text-muted">Note: Mention a few lines about the website and its special features.</div>
+            <span class="text-danger" id="descriptionError"><%= errors.web_site_description || '' %></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="web_site_url" class="form-label">Web Site URL</label>
+            <input type="url" class="form-control" id="web_site_url" name="web_site_url" title="Web Site URL" value="<%= oldValues.web_site_url || '' %>" required>
+            <span class="text-danger" id="urlError"><%= errors.web_site_url || '' %></span>
+        </div>
+        <div class="mb-3 pb-10">
+            <label for="formFileMultiple" class="form-label">Upload Files</label>
+            <input class="form-control" type="file" name="web_site_image" id="web_site_image" multiple>
+            <span class="text-danger" id="urlError"><%= errors.web_site_image || '' %></span>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Verify Web Site</button>
+        </div>
+    </form>
+</div>
+
+<script>
+function validateForm() {
+    let valid = true;
+
+    // Clear previous error messages
+    document.getElementById('nameError').textContent = '';
+    document.getElementById('categoryError').textContent = '';
+    document.getElementById('descriptionError').textContent = '';
+    document.getElementById('urlError').textContent = '';
+
+    const name = document.getElementById('web_site_name').value;
+    const category = document.getElementById('web_site_category').value;
+    const description = document.getElementById('web_site_descrption').value;
+    const url = document.getElementById('web_site_url').value;
+
+    // Validation checks
+    if (name.length < 5) {
+        document.getElementById('nameError').textContent = 'Web Site Name must be at least 5 characters.';
+        valid = false;
+    }
+    if (category.length < 5) {
+        document.getElementById('categoryError').textContent = 'Web Site Category must be at least 5 characters.';
+        valid = false;
+    }
+    if (description.length < 5) {
+        document.getElementById('descriptionError').textContent = 'Web Site Description must be at least 5 characters.';
+        valid = false;
+    }
+    if (!/^https?:\/\/.+/.test(url)) {
+        document.getElementById('urlError').textContent = 'Web Site URL must be a valid URL starting with http:// or https://.';
+        valid = false;
+    }
+
+    return valid; // Prevent form submission if not valid
+}
+</script>

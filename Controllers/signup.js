@@ -1,8 +1,6 @@
 const Express = require('express')
 const { SignUpModel } = require('../Models/database');
-const expressLayouts = require('express-ejs-layouts');
 const fs = require('fs');
-const path = require('path');
 
 const AuthRouter = Express.Router();;
 
@@ -32,18 +30,28 @@ AuthRouter.post('/signup', async (req, res) => {
             if(err) console.log(err);
             else{
                 const parsedData = JSON.parse(data);
-                res.render('../views/Home/index.ejs', { layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/auth.layout.ejs', data: parsedData.products })
+                res.render('../views/Home/index.ejs', { data: parsedData.products })
             }
         })
     }catch(err){
-        res.render('../views/Auth/signup.ejs');
+        res.render('../views/Auth/signup.ejs', {layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs'});
     }
 });
 
 // Registration route
 AuthRouter.get('/register', (req, res) => {
-    res.render('../views/Auth/signup.ejs');
+    res.render('../views/Auth/signup.ejs', {layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs'});
 });
+
+AuthRouter.get('/home', (req,res)=>{
+    fs.readFile('C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Data/data.json', 'utf8',(err,data)=>{
+        if(err) console.log(err);
+        else{
+            const parsedData = JSON.parse(data);
+            res.render('../views/Home/index.ejs', { data: parsedData.products })
+        }
+    })
+})
 
 AuthRouter.post('/login', (req,res)=>{ 
     
@@ -56,21 +64,21 @@ AuthRouter.post('/login', (req,res)=>{
             if(err) console.log(err);
             else{
                 const parsedData = JSON.parse(data);
-                res.render('../views/Home/index.ejs', { layout:'../views/Layouts/auth.layout.ejs', data: parsedData.products })
+                res.render('../views/Home/index.ejs', { data: parsedData.products })
             }
         })
         }
         else{
-            res.render('../views/Auth/login.ejs');
+            res.render('../views/Auth/login.ejs', {layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs'});
         }
     }).catch(err =>{
-        res.render('../views/Auth/login.ejs');
+        res.render('../views/Auth/login.ejs', {layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs'});
     });
 })
 
 // Logout route
 AuthRouter.post('/logout', (req, res) => {
-    res.render('../views/Auth/login.ejs');
+    res.render('../views/Auth/login.ejs', { layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs'});
 });
 
 module.exports = AuthRouter;

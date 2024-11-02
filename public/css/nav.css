@@ -3,23 +3,27 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f3f4f6;
+    color: #333;
 }
-
 
 /* Nav-bar container */
 .nav-bar {
     background-color: #333;
     padding: 10px 20px;
     width: 100%;
-    position: fixed;
-    height: 30px;
+    position: static;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
 }
 
-/* Styling for the nav element */
-/* nav {
+/* Center the navbar content */
+.nav-bar nav {
     display: flex;
     justify-content: space-between;
-} */
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
 /* Styling for the ordered list */
 nav ol {
@@ -28,6 +32,7 @@ nav ol {
     padding: 0;
     display: flex;
     gap: 20px; /* Space between list items */
+    align-items: center;
 }
 
 /* Styling for each list item */
@@ -35,6 +40,19 @@ nav ol li {
     color: white;
     font-size: 18px;
     cursor: pointer;
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+/* Hover effect for list items */
+nav ol li:hover {
+    color: #ccc; /* Change color on hover */
+}
+nav ol li a{
+    text-decoration: none;
+    color: white;
+}
+nav ol li a:hover{
+    color: #ccc;
 }
 
 /* Logout button styling */
@@ -42,20 +60,12 @@ nav ol li {
     background-color: #4CAF50; /* Green background */
     color: white; /* White text */
     border: none; /* Remove default border */
-    padding: 10px 20px; /* Add padding */
+    padding: 8px 16px; /* Adjust padding */
     text-align: center;
-    text-decoration: none;
-    display: flex;
-    justify-content: flex-end;
     font-size: 16px;
     cursor: pointer; /* Pointer cursor on hover */
     border-radius: 5px; /* Rounded corners */
     transition: background-color 0.3s ease; /* Smooth background color transition */
-}
-
-/* Hover effect for list items */
-nav ol li:hover {
-    color: #ccc; /* Change color on hover */
 }
 
 /* Hover effect for logout button */
@@ -63,7 +73,8 @@ nav ol li:hover {
     background-color: #45a049; /* Darker green on hover */
 }
 
+/* Ensure Logout button aligns with nav items */
 .logout {
     display: flex;
-    justify-content: flex-end;
-  }
+    align-items: center;
+}
