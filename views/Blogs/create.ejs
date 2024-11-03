@@ -1,4 +1,9 @@
 <link rel="stylesheet" href="./css/blogs.css">
+<% if (errorMessage) { %>
+    <div id="error-alert" class="alert alert-danger" role="alert"  style="display: block;">
+        <%= errorMessage %>
+    </div>
+<% } %>
 <div class="container mt-5">
     <form enctype="multipart/form-data" method="post" id="formWeb" class="p-4 border rounded bg-light" action="./submit" onsubmit="return validateForm()">
         <div class="mb-3">

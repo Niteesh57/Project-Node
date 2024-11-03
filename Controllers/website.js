@@ -1,7 +1,9 @@
 const Express = require('express');
 const multer = require('multer'); // Ensure multer is imported
 const WebSiterouter = Express.Router();
-const upload = multer({ dest: 'public/images/' }); // Specify the destination for uploaded files
+const { WebSite } = require('../Models/webSiteModel')
+const path = require('path');
+
 
 
 const app = Express();
@@ -16,23 +18,27 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to file name to avoid duplicates
     }
+
 });
+
+const upload = multer({ storage: storage }); // Specify the destination for uploaded files
+
 
 
 WebSiterouter.get('/creation', (req, res) => {
     const oldValues = {};
     const errors = {};
-    res.render('Blogs/create.ejs', { title: 'Create Web Site', oldValues, errors });
+    var errorMessage;
+    res.render('Blogs/create.ejs', { title: 'Create Web Site', oldValues, errors, errorMessage });
 });
 // upload.single('web_site_image')
 
 WebSiterouter.post('/submit', upload.single('web_site_image'), async (req, res) => { // Use multer's middleware here
     const oldValues = {};
     const errors = {};
-    
+    var errorMessage;
     // Destructure fields from the request body
     const { web_site_name, web_site_category, web_site_description, web_site_url } = req.body;
-    console.log(req.body);
     const web_site_image = req.file; // Get the uploaded file
 
     // Validate web_site_name
@@ -81,36 +87,26 @@ WebSiterouter.post('/submit', upload.single('web_site_image'), async (req, res) 
 
     // Check if there are any errors
     if (Object.keys(errors).length > 0) {
-        console.log(errors, oldValues);
 
         // Re-render the form with error messages and old values
-        return res.render('Blogs/create.ejs', { errors, oldValues });
+        return res.render('Blogs/create.ejs', { errors, oldValues, errorMessage });
     }
 
-    // Process the valid data here (e.g., save to database)
-    res.send('Form submitted successfully!');
+    const website = new WebSite({
+        webSiteName: web_site_name,
+        webSiteCategory: web_site_category,
+        webSiteDescription: web_site_description,
+        webSiteUrl: web_site_url,
+        webSiteImage: req.file ? req.file.path : null
+    })
+    // Save the website to the database
+    website.save()
+    .then(() => {
+        res.redirect('/home');
+    }).catch(err => {
+        var errorMessage = "Error saving website: " + err.message;
+        res.status(500).render('Blogs/create.ejs', { title: 'Create Web Site', oldValues, errors, errorMessage });
+    });
 });
 
 module.exports = { WebSiterouter };
-
-// const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         return res.status(422).json({ errors: errors.array() });
-//         }
-//         const webSite = new WebSite({
-//             name: name,
-//             categary: categary,
-//             description: description,
-//             url: url,
-//             image: image
-//             });
-//             webSite.save()
-//             .then((data) => {
-//                 res.redirect('/');
-//                 })
-//                 .catch((err) => {
-//                     console.error(err);
-//                     res.status(500).send('Error saving data');
-//                     });
-
-module.exports = { WebSiterouter }

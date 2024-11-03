@@ -9,7 +9,7 @@ app.use(Express.json());
 app.use(Express.urlencoded({extended: true}))
 
 AuthRouter.get('/', (req, res) => {
-    res.render('../views/Auth/login.ejs');
+    res.render('../views/Auth/login.ejs',{layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs'});
 });
 
 

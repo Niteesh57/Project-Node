@@ -39,27 +39,7 @@ const SignUp = mongoose.Schema({
 })
 const SignUpModel = mongoose.model('SignUp', SignUp);
 
-const WebSites = mongoose.Schema({
-    webSiteName:{
-        type: String,
-        required: true,
-        unique: true,
-    },
-    webSiteCategory:{
-        type: String,
-        required: true,
-    },
-    webSiteDescription:{
-        type: String,
-    },
-    webSiteUrl:{
-        type: String,
-    },
-    webSiteImage:{
-        type: String,
-    }
-});
 
-const WebSite = mongoose.model('Website', WebSites);
 
-module.exports = { SignUpModel, WebSite }
+
+module.exports = { SignUpModel,  mongoose }
