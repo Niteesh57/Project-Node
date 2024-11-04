@@ -2,6 +2,7 @@ const Express = require('express');
 const multer = require('multer'); // Ensure multer is imported
 const WebSiterouter = Express.Router();
 const { WebSite } = require('../Models/webSiteModel')
+const { Reviews } = require('../Models/reviews');
 const path = require('path');
 
 
@@ -58,7 +59,7 @@ WebSiterouter.post('/submit', upload.single('web_site_image'), async (req, res) 
     }
 
     // Validate web_site_description
-    if (typeof web_site_description !== 'string' || web_site_description.length < 30 || web_site_description.length > 300) {
+    if (typeof web_site_description !== 'string' || web_site_description.length < 30 || web_site_description.length > 50) {
         oldValues.web_site_description = web_site_description;
         errors.web_site_description = 'Description must be between 30 and 300 characters long and a string';
     } else {
@@ -107,6 +108,22 @@ WebSiterouter.post('/submit', upload.single('web_site_image'), async (req, res) 
         var errorMessage = "Error saving website: " + err.message;
         res.status(500).render('Blogs/create.ejs', { title: 'Create Web Site', oldValues, errors, errorMessage });
     });
+});
+
+WebSiterouter.post('/review', async (req, res) => {
+    const review = new Reviews({
+        review: req.body.review,
+        webSiteId: req.body.webSiteId
+    });
+
+    try {
+        await review.save();
+        res.redirect('/home');
+    } catch (err) {
+        const errorMessage = "Error saving review: " + err.message;
+        // Use a query parameter to pass the error message
+        res.redirect(`/home?error=${encodeURIComponent(errorMessage)}`);
+    }
 });
 
 module.exports = { WebSiterouter };

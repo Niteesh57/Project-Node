@@ -1,8 +1,10 @@
 const Express = require('express')
 const { SignUpModel } = require('../Models/database');
 const fs = require('fs');
+const { WebSite } = require('../Models/webSiteModel');
+const { Reviews } = require('../Models/reviews')
 
-const AuthRouter = Express.Router();;
+const AuthRouter = Express.Router();
 
 const app = Express();
 app.use(Express.json());
@@ -26,13 +28,7 @@ AuthRouter.post('/signup', async (req, res) => {
         });
 
         // await data.save();
-        fs.readFile('C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Data/data.json', 'utf8',(err,data)=>{
-            if(err) console.log(err);
-            else{
-                const parsedData = JSON.parse(data);
-                res.render('../views/Home/index.ejs', { data: parsedData.products })
-            }
-        })
+        res.redirect('/home');
     }catch(err){
         res.render('../views/Auth/signup.ejs', {layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs'});
     }
@@ -43,30 +39,21 @@ AuthRouter.get('/register', (req, res) => {
     res.render('../views/Auth/signup.ejs', {layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs'});
 });
 
-AuthRouter.get('/home', (req,res)=>{
-    fs.readFile('C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Data/data.json', 'utf8',(err,data)=>{
-        if(err) console.log(err);
-        else{
-            const parsedData = JSON.parse(data);
-            res.render('../views/Home/index.ejs', { data: parsedData.products })
-        }
-    })
+AuthRouter.get('/home', async (req,res)=>{
+    const errorMessage = req.query.error || '';
+    const result = await WebSite.find({}, { __v: 0 });
+    const messagesData = await Reviews.find({}, { __v: 0 });
+    res.render('../views/Home/index.ejs', { data: result, messages: messagesData, errorMessage  })
 })
 
 AuthRouter.post('/login', (req,res)=>{ 
     
     const { username, password} = req.body
     SignUpModel.findOne({name: username, password: password})
-    .then(user =>{
+    .then(async user =>{
         if (user)
         {
-        fs.readFile('C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Data/data.json', 'utf8',(err,data)=>{
-            if(err) console.log(err);
-            else{
-                const parsedData = JSON.parse(data);
-                res.render('../views/Home/index.ejs', { data: parsedData.products })
-            }
-        })
+            res.redirect('/home');
         }
         else{
             res.render('../views/Auth/login.ejs', {layout:'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs'});

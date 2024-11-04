@@ -18,14 +18,14 @@ require('dotenv').config();
 // });
 
 app.set('view engine', 'ejs');
-app.use(helmet());
+// app.use(helmet());
 
 WebSiterouter.use(exp.static('public'));
 app.use(exp.static('public'));
 
 app.use(exp.urlencoded({ extended: true }));
 app.use(expressLayouts);
-app.set('layout', './Layouts/auth.layout.ejs');
+app.set('layout','./Layouts/auth.layout.ejs');
 
 app.use(AuthRouter);
 app.use("/blogs",WebSiterouter);

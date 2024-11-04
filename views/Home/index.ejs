@@ -1,18 +1,129 @@
+<% if (errorMessage) { %>
+<div id="error-alert" class="alert alert-danger" role="alert" style="display: block;">
+  <%= errorMessage %>
+</div>
+<% } %>
 
 <div class="body-cards">
-  <script>
-    console.log(users);
-  </script>
-  <% for( let s = 0; s < data.length; s++ ) { %>
-  <div class="card">
-    <h2><%= data[s]['title'] %></h2>
-    <p><%= data[s].description %></p>
-    <h4><%= data[s].brand %></h4>
-    <h4><%= data[s].category %></h4>
-    <h4>$<%= data[s].price %></h4>
-    <h4>Discount: <%= data[s].discountPercentage %>%</h4>
-    <p>Rating: <%= data[s].rating %> / 5</p>
-    <p>Stock: <%= data[s].stock %> units</p>
+  <% for (let s = 0; s < data.length; s++) { %>
+  <div class="card" style="margin: 20px;">
+    <div class="card-body">
+      <!-- Display the image -->
+      <img src="<%= data[s].webSiteImage.replace('public\\', '/') %>" alt="<%= data[s].webSiteName %> image" style="width: 100%; height: auto;">
+
+      <h2><%= data[s].webSiteName %></h2>
+      <p><%= data[s].webSiteCategory %></p>
+      <h4><%= data[s].webSiteDescription %></h4>
+
+      <!-- Button to open the website -->
+      <a href="<%= data[s].webSiteUrl %>" target="_blank" class="btn btn-primary" style="text-decoration: none; color: aliceblue;">View</a>
+
+      <!-- Button to trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal<%= s %>">
+        Reviews
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal for each card with unique ID -->
+  <div class="modal fade" id="modal<%= s %>" tabindex="-1" aria-labelledby="modalLabel<%= s %>" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel<%= s %>"><%= data[s].webSiteName %> Reviews</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="./blogs/review" method="post" id="review-form-<%= s %>">
+            <!-- Hidden field to store the website ID -->
+            <input type="hidden" name="webSiteId" value="<%= data[s]._id %>">
+
+            <div class="input-group">
+              <textarea class="form-control" name="review" id="review-text-<%= s %>" placeholder="Add Your Experience" required></textarea>
+            </div>
+            <span id="textarea-error-<%= s %>" class="text-danger"></span>
+          </form>
+          <div>
+            <% if (messages && messages.length === 0) { %>
+              <p>No reviews available.</p>
+            <% } else { %>
+              <% for (let i = 0; i < messages.length; i++) { %>
+                <% if (messages[i].webSiteId.toString() === data[s]._id.toString()) { %>
+                  <div class="review-card">
+                    <div class="message-bubble">
+                      <p><%= messages[i].review %></p>
+                    </div>
+                  </div>
+                <% } %>
+              <% } %>
+            <% } %>
+          </div>
+          
+
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="submitReview(<%= s %>)">Add Valuable Response</button>
+        </div>
+      </div>
+    </div>
   </div>
   <% } %>
 </div>
+<style>
+  .review-card {
+    margin: 10px 0;
+  }
+
+  .message-bubble {
+    display: inline-block;
+    background-color: #e1ffc7; /* Light green background like WhatsApp */
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 75%; /* Limit width to make it more like a chat */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+
+  .message-bubble p {
+    margin: 0; /* Remove default margins */
+    color: #333; /* Dark text for better readability */
+  }
+</style>
+<script>
+  // Function to handle review submission
+  function submitReview(index) {
+    const textArea = document.getElementById(`review-text-${index}`);
+    const errorSpan = document.getElementById(`textarea-error-${index}`);
+    const reviewText = textArea.value.trim();
+
+    // Check if review text is long enough
+    if (reviewText.length < 10) {
+      errorSpan.textContent = "Enter enough text to submit (at least 10 characters)";
+      return;
+    }
+
+    // If validation passed, submit the form
+    const form = document.getElementById(`review-form-${index}`);
+    form.submit();
+  }
+</script>
+
+<script>
+  // Function to handle review submission
+  function submitReview(index) {
+    const textArea = document.getElementById(`review-text-${index}`);
+    const errorSpan = document.getElementById(`textarea-error-${index}`);
+    const reviewText = textArea.value.trim();
+
+    // Check if review text is long enough
+    if (reviewText.length < 10) {
+      errorSpan.textContent = "Enter enough text to submit";
+      return;
+    }
+
+    // If validation passed, submit the form
+    const form = document.getElementById(`review-form-${index}`);
+    form.submit();
+  }
+</script>
