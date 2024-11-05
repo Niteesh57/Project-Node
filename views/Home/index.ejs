@@ -14,7 +14,14 @@
       <h2><%= data[s].webSiteName %></h2>
       <p><%= data[s].webSiteCategory %></p>
       <h4><%= data[s].webSiteDescription %></h4>
-
+      <div class="sentiment-container p-3">
+        <div class="positive-sentiment sentiment" title="Positive Sentiment">
+          👍 <%= (averagePositivePercentage[data[s]._id] * 100).toFixed(2) %>%
+        </div>
+        <div class="negative-sentiment sentiment" title="Negative Sentiment">
+          👎 <%= (averageNegativePercentage[data[s]._id] * 100).toFixed(2) %>%
+        </div>
+      </div>
       <!-- Button to open the website -->
       <a href="<%= data[s].webSiteUrl %>" target="_blank" class="btn btn-primary" style="text-decoration: none; color: aliceblue;">View</a>
 
@@ -72,6 +79,47 @@
   <% } %>
 </div>
 <style>
+  .sentiment-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .sentiment {
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  /* Positive sentiment styling */
+  .positive-sentiment {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  /* Negative sentiment styling */
+  .negative-sentiment {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+
+  /* Hover animation */
+  .sentiment:hover {
+    transform: scale(1.1);
+    animation: hoverPulse 0.5s infinite alternate;
+  }
+
+  /* Animation definition */
+  @keyframes hoverPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15); }
+  }
+
   .review-card {
     margin: 10px 0;
   }

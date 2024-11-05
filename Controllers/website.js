@@ -3,6 +3,8 @@ const multer = require('multer'); // Ensure multer is imported
 const WebSiterouter = Express.Router();
 const { WebSite } = require('../Models/webSiteModel')
 const { Reviews } = require('../Models/reviews');
+const Sentiment = require('sentiment');
+const sentiment = new Sentiment();
 const path = require('path');
 
 
@@ -111,14 +113,37 @@ WebSiterouter.post('/submit', upload.single('web_site_image'), async (req, res) 
 });
 
 WebSiterouter.post('/review', async (req, res) => {
-    const review = new Reviews({
-        review: req.body.review,
-        webSiteId: req.body.webSiteId
-    });
-
     try {
+        // Analyze the review text for sentiment
+        const analysis = sentiment.analyze(req.body.review);
+
+        // Determine sentiment category and percentage
+        let sentimentCategory;
+        let positivePercentage = 0;
+        let negativePercentage = 0;
+
+        if (analysis.score > 0) {
+            sentimentCategory = 'positive';
+            positivePercentage = Math.min(100, (analysis.score / analysis.tokens.length) * 100); // Basic normalization
+        } else if (analysis.score < 0) {
+            sentimentCategory = 'negative';
+            negativePercentage = Math.min(100, Math.abs((analysis.score / analysis.tokens.length) * 100));
+        } else {
+            sentimentCategory = 'neutral';
+        }
+
+        // Create a new review with sentiment analysis data
+        const review = new Reviews({
+            review: req.body.review,
+            webSiteId: req.body.webSiteId,
+            sentiment: sentimentCategory,
+            positivePercentage: positivePercentage,
+            negativePercentage: negativePercentage
+        });
+
         await review.save();
         res.redirect('/home');
+
     } catch (err) {
         const errorMessage = "Error saving review: " + err.message;
         // Use a query parameter to pass the error message
