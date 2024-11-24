@@ -2,6 +2,7 @@ const exp = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const AuthRouter = require('./Controllers/signup');
 const { WebSiterouter } = require('./Controllers/website');
+const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const https = require('http');
 const helmet = require('helmet');
@@ -9,13 +10,13 @@ const app = exp();
 
 require('dotenv').config();
 
-// app.use(function s(req, res, next) {
-//     let dates = Date.now();
-//     res.locals.title = "My App";
-//     let t1 = Date.now() - dates;
-//     console.log(t1);
-//     next();
-// });
+app.use(function s(req, res, next) {
+    let dates = Date.now();
+    res.locals.title = "My App";
+    let t1 = Date.now() - dates;
+    console.log(t1);
+    next();
+});
 
 app.set('view engine', 'ejs');
 // app.use(helmet());
