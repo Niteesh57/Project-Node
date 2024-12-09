@@ -2,7 +2,10 @@ const Express = require('express')
 const { SignUpModel } = require('../Models/database');
 const fs = require('fs');
 const { WebSite } = require('../Models/webSiteModel');
-const { Reviews } = require('../Models/reviews')
+const { Reviews } = require('../Models/reviews');
+const { request } = require('http');
+const jwt = require('jsonwebtoken');
+const env = process.env;
 
 const AuthRouter = Express.Router();
 
@@ -26,6 +29,12 @@ AuthRouter.post('/signup', async (req, res) => {
             email: req.body.email,
             password: req.body.password
         });
+
+        // Save the user data
+        const result = await data.save();
+
+        token = JWT(result);
+        res.cookie('JWT', token, { httpOnly: true })
 
         // await data.save();
         res.redirect('/home');
@@ -81,6 +90,7 @@ AuthRouter.post('/login', (req, res) => {
     SignUpModel.findOne({ name: username, password: password })
         .then(async user => {
             if (user) {
+                await res.cookie('JWT', JWT(user), { httpOnly: true })
                 res.redirect('/home');
             }
             else {
@@ -95,5 +105,21 @@ AuthRouter.post('/login', (req, res) => {
 AuthRouter.post('/logout', (req, res) => {
     res.render('../views/Auth/login.ejs', { layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' });
 });
+
+
+
+const JWT = function (result)
+{
+    const token = jwt.sign(
+        { 
+            id: result._id,
+            email: result.email
+        }, 
+        env.SECRETE_KEY,
+        { expiresIn: '1h' } // Optional: Set an expiration time for the token
+    );
+
+    return token
+} 
 
 module.exports = AuthRouter;
