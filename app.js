@@ -24,34 +24,53 @@ app.use(function s(req, res, next) {
 app.use(cookieParser());
 
 // Your JWT verification middleware
-app.use(function data(req, res, next) {
-    try {
-        const token = req.cookies.JWT; // Access the JWT from cookies
-        if (!token) {
-            return res.render('../views/Auth/login.ejs', { 
-                layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' 
-            });
-        } else {
-            const decoded = jwt.verify(token, process.env.SECRETE_KEY);
-            if (!decoded) {
-                return res.render('../views/Auth/login.ejs', { 
-                    layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' 
-                });
-            }
-            req.user = decoded; // Attach the decoded user information to the request object
-            return next(); // Call next() to pass control to the next middleware
-        }
-    } catch (error) {
-        console.error('Error verifying token:', error);
-        return res.render('../views/Auth/login.ejs', { 
-            layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' 
-        });
-    }
-});
+// app.use(function data(req, res, next) {
+//     try {
+//         const token = req.cookies.JWT; // Access the JWT from cookies
+//         if (!token) {
+//             return res.render('../views/Auth/login.ejs', { 
+//                 layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' 
+//             });
+//         } else {
+//             const decoded = jwt.verify(token, process.env.SECRETE_KEY);
+//             if (!decoded) {
+//                 return res.render('../views/Auth/login.ejs', { 
+//                     layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' 
+//                 });
+//             }
+//             req.user = decoded; // Attach the decoded user information to the request object
+//             return next(); // Call next() to pass control to the next middleware
+//         }
+//     } catch (error) {
+//         console.error('Error verifying token:', error);
+//         return res.render('../views/Auth/login.ejs', { 
+//             layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' 
+//         });
+//     }
+// });
 
+
+const authMiddleware = (req, res, next) => {
+    const token = req.cookies.JWT;
+    console.log(token);
+    if (!token) {
+      return res.render('../views/Auth/login.ejs', { layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' });
+    }
+  
+    try {
+      const decoded = jwt.verify(token, process.env.SECRETE_KEY);
+      req.user = decoded;
+      next();
+    } catch (err) {
+        return res.render('../views/Auth/login.ejs', { layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' });
+    }
+  };
+  
+// Apply authMiddleware to all routes (or specific routes if desired)
 app.set('view engine', 'ejs');
 
 // app.use(helmet());
+
 
 WebSiterouter.use(exp.static('public'));
 app.use(exp.static('public'));
@@ -61,7 +80,7 @@ app.use(expressLayouts);
 app.set('layout','./Layouts/auth.layout.ejs');
 
 app.use(AuthRouter);
-app.use("/blogs",WebSiterouter);
+app.use("/blogs",WebSiterouter,authMiddleware);
 
 // Handle 404 errors
 app.use((req, res) => {

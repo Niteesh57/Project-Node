@@ -103,6 +103,7 @@ AuthRouter.post('/login', (req, res) => {
 
 // Logout route
 AuthRouter.post('/logout', (req, res) => {
+    res.clearCookie('JWT', { httpOnly: true });
     res.render('../views/Auth/login.ejs', { layout: 'C:/Users/Niteesh.bv/OneDrive/Desktop/login Page/views/Layouts/unauth.layout.ejs' });
 });
 
